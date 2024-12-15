@@ -1,10 +1,11 @@
 import mysql.connector
 from mysql.connector import Error
 import time
+from game import Game
 
 class DataBase:
-    def create_table(self):
-        table_creation = '''
+    def create_tables(self):
+        prices_table_creation = '''
         CREATE TABLE IF NOT EXISTS game_prices (
             name VARCHAR(255) UNIQUE,
             steam_price DECIMAL(10, 2),
@@ -15,7 +16,15 @@ class DataBase:
             ggsell_price DECIMAL(10, 2)
         );
         '''
-        self.push(table_creation)
+        self.push(prices_table_creation)
+
+        images_table_creation = '''
+        CREATE TABLE IF NOT EXISTS game_images (
+            name VARCHAR(255) UNIQUE,
+            image_link TEXT
+        );
+        '''
+        self.push(images_table_creation)
 
     def __init__(self, host, user:str, password, database_name, port=3306):
         self.host = host
@@ -23,7 +32,7 @@ class DataBase:
         self.password = password
         self.database = database_name
         self.port = port
-        self.create_table()
+        self.create_tables()
 
     def push(self, query):
         connection_attempts = 0
@@ -45,12 +54,13 @@ class DataBase:
                     break
 
             except Error as e:
+                print(e)
                 time.sleep(5)
                 continue
 
 
 
-    def update_game_prices(self, game):
+    def update_game_prices(self, game:Game):
         fields_available = 'name, steam_price'
         fields = f'"{game.name}", {game.steam_price}'
         if game.zaka_zaka_price is not None:
@@ -70,7 +80,8 @@ class DataBase:
             fields += f', {game.ggsell_price}'
 
         update_game_query = f'''
-        INSERT INTO game_prices ({fields_available}) VALUES ({fields})
+        INSERT INTO game_prices ({fields_available})
+        VALUES ({fields})
         ON DUPLICATE KEY UPDATE
             steam_price = VALUES(steam_price),
             zaka_zaka_price = VALUES(zaka_zaka_price),
@@ -81,6 +92,15 @@ class DataBase:
         '''
         self.push(update_game_query)
 
+    def add_game_image(self, game:Game):
+        add_image_query = f'''
+        INSERT INTO game_images (name, image_link)
+        VALUES ('{game.name}', '{game.image_link}')
+        ON DUPLICATE KEY UPDATE
+            image_link = VALUES(image_link);
+        '''
+        self.push(add_image_query)
+
 
 if __name__ == "__main__":
-    data_base = DataBase('db', 'user', 'user_password', 'game_prices')
+    data_base = DataBase('db', 'user', 'user_password', 'game_info')

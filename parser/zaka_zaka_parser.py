@@ -31,7 +31,10 @@ def find_game_price(name: str) -> float | None:
         print(f"{name} not found in zaka-zaka")
         return None
     print(f"Found {name} in zaka-zaka")
-    return float(price_element.text.strip().split()[0].replace(",", "."))
+    try:
+        return float(price_element.text.strip().split()[0].replace(",", "."))
+    except ValueError:
+        return None
 
 if __name__ == "__main__":
-    print(find_game_price("Graveyard Keeper"))
+    print(find_game_price("Grpaveyard Keeer"))

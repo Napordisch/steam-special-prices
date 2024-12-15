@@ -2,7 +2,7 @@ This app looks for games that are on sale on Steam and finds prices for these ga
 ### Planned Stores:
 - [x] Gabe Store
 - [x] zaka-zaka
-- [ ] steampay
+- [x] steampay
 - [ ] steam-account
 - [ ] ggsell
 - [ ] plati.ru (questionable)
