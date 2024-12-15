@@ -1,0 +1,27 @@
+services:
+  parser:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile
+    container_name: parser-container
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+    volumes:
+      - ./parser:/parser-app
+
+  db:
+    container_name: my-sql-db-container
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: game_prices
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+volumes:
+  db:
