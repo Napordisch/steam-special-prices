@@ -4,5 +4,3 @@ This app looks for games that are on sale on Steam and finds prices for these ga
 - [x] zaka-zaka
 - [x] steampay
 - [ ] steam-account
-- [ ] ggsell
-- [ ] plati.ru (questionable)
