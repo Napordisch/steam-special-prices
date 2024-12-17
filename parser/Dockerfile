@@ -12,9 +12,13 @@ RUN apt-get clean
 
 # Download the latest stable geckodriver dynamically
 RUN ARCH=$(uname -m) && \
-    LATEST_URL=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | \
-                 grep "browser_download_url.*linux" | grep "$ARCH" | cut -d '"' -f 4) && \
-    curl -L $LATEST_URL -o /tmp/geckodriver.tar.gz && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz -O /tmp/geckodriver.tar.gz; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux-aarch64.tar.gz -O /tmp/geckodriver.tar.gz; \
+    else \
+        echo "Unsupported architecture: $ARCH" && exit 1; \
+    fi && \
     tar -xvzf /tmp/geckodriver.tar.gz -C /usr/local/bin && \
     chmod +x /usr/local/bin/geckodriver
 
