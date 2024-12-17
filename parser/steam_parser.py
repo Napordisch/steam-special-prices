@@ -5,17 +5,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.service import Service
 
 from game import Game
 
 amount_of_pages = 10
-options = Options()
+
+service = Service(executable_path='/usr/local/bin/geckodriver')
+options = webdriver.FirefoxOptions()
 options.add_argument('--headless')
 options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
-driver = webdriver.Firefox(options=options)
+driver = webdriver.Firefox(options=options, service=service)
 # driver = webdriver.Firefox()
 def get_top_games_on_steam_with_special_prices() -> list[Game]:
     url = 'https://store.steampowered.com/specials/?flavor=contenthub_topsellers'
