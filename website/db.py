@@ -17,7 +17,6 @@ def query_db(query:str):
         # Execute a query
         cursor.execute(query)
         results = cursor.fetchall()
-        print (f"querying db: \"{query}\" ")
         return (results)
 
     except mysql.connector.Error as e:
