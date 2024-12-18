@@ -8,8 +8,8 @@ services:
       - PYTHONUNBUFFERED=1
     depends_on:
       - db
-    volumes:
-      - ./parser:/parser-app
+    # volumes:
+    #   - ./parser:/parser-app
 
   db:
     container_name: my-sql-db-container
@@ -23,5 +23,21 @@ services:
       - "3306:3306"
     volumes:
       - ./db:/var/lib/mysql
+
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    container_name: website-container
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+      - parser
+    ports:
+      - "5001:5000"
+    # volumes:
+    #   - ./website:/website-app
+
 volumes:
   db:

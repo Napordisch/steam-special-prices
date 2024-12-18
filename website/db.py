@@ -2,31 +2,34 @@ from flask import Flask, jsonify
 import mysql.connector
 
 db_config = {
-    'host': 'localhost',
+    'host': 'db',
     'user': 'user',
     'password': 'user_password',
     'database': 'game_info'
 }
 
 def query_db(query:str):
-    try:
-        # Connect to the database
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor(dictionary=True)
+    connection_attempts = 0
+    while connection_attempts < 10:
+        connection_attempts += 1
+        try:
+            # Connect to the database
+            connection = mysql.connector.connect(**db_config)
+            cursor = connection.cursor(dictionary=True)
 
-        # Execute a query
-        cursor.execute(query)
-        results = cursor.fetchall()
-        return (results)
+            # Execute a query
+            cursor.execute(query)
+            results = cursor.fetchall()
+            return (results)
 
-    except mysql.connector.Error as e:
-        print(({"error": str(e)}))
+        except mysql.connector.Error as e:
+            print(({"error": str(e)}))
 
-    finally:
-        # Close connections
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
+        finally:
+            # Close connections
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
 #
 # if __name__ == "__main__":
 #     try:
