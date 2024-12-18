@@ -7,6 +7,10 @@ app = Flask(__name__, static_folder='static')
 def send_static(filename):
     return send_from_directory('static', filename)
 
+@app.route('/<game_id>')
+def show_game_comparision_page(game_id):
+    return send_from_directory('static', "price-comparison-page.html")
+
 @app.route('/')
 def show_all_games_page():
     return send_from_directory('static', "main_page.html")
@@ -38,6 +42,7 @@ def get_game_with_prices(game_id):
     game.update(image_link_dict)
     game.update(shop_links)
     return jsonify(game)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

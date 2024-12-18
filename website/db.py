@@ -24,33 +24,11 @@ def query_db(query:str):
 
         except mysql.connector.Error as e:
             print(({"error": str(e)}))
+            time.sleep(5)
+            continue
 
         finally:
             # Close connections
             if connection.is_connected():
                 cursor.close()
                 connection.close()
-#
-# if __name__ == "__main__":
-#     try:
-#         # Connect to the database
-#         connection = mysql.connector.connect(**db_config)
-#         cursor = connection.cursor(dictionary=True)
-#
-#         # Execute a query
-#         query = "SELECT * FROM game_prices"
-#         cursor.execute(query)
-#         results = cursor.fetchall()
-#         for i in results:
-#             print(i)
-#
-#         print((results))
-#
-#     except mysql.connector.Error as e:
-#         print(({"error": str(e)}))
-#
-#     finally:
-#         # Close connections
-#         if connection.is_connected():
-#             cursor.close()
-#             connection.close()

@@ -2,21 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import utilities
 
-# using search results
-# def find_game_price(name) -> float | None:
-#     page = requests.get(f"https://zaka-zaka.com/search/ask/{name}/sort/name.asc").text
-#     page_as_soup = BeautifulSoup(page, 'html.parser')
-#     game_block_as_soup = BeautifulSoup(str(page_as_soup.find(class_="game-block")), 'html.parser')
-#     if game_block_as_soup.find(class_ ="game-block-name") is None:
-#         return None
-#     if game_block_as_soup.find(class_ = "game-block-name").text == name:
-#         print(f"found {name} in zaka-zaka")
-#         return float(game_block_as_soup.find(class_ = "game-block-price").text.strip().split()[0].replace(",", "."))
-#     else:
-#         print(f'{name} not found in zaka-zaka')
-#         return None
-
-#using page
 def find_game_price_and_link(name: str) -> tuple[float, str] | tuple[None,None]:
     formatted_name = utilities.to_kebab_case(name)
     game_url = "https://zaka-zaka.com/game/" + formatted_name
