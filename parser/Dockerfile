@@ -3,6 +3,7 @@ FROM python:3
 WORKDIR /parser-app
 
 COPY requirements.txt /parser-app
+COPY *.py /parser-app
 RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update
