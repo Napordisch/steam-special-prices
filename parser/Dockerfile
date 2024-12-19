@@ -20,8 +20,9 @@ RUN ARCH=$(uname -m) && \
 RUN geckodriver --version
 
 WORKDIR /parser-app
+COPY requirements.txt /parser-app
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /parser-app
-RUN pip install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "./main.py" ]
