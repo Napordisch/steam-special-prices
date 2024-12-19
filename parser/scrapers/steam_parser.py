@@ -16,10 +16,10 @@ options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
-driver = webdriver.Firefox(options=options, service=service)
 
 
 def get_top_games_on_steam_with_special_prices() -> list[Game]:
+    driver = webdriver.Firefox(options=options, service=service)
     url = 'https://store.steampowered.com/specials/?flavor=contenthub_topsellers'
     driver.get(url)
 

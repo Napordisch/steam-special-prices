@@ -20,9 +20,16 @@ def find_game_price_and_link(name: str, shop: str) -> tuple[float, str] | \
     if price_element is None:
         print(f"{name} not found in {shop}")
         return None, None
-    print(f"Found {name} in {shop}")
     try:
-        return float(
-            price_element.text.strip().split()[0].replace(",", ".")), game_url
+        price = float(price_element.text.strip().split()[0].replace(",", "."))
+        if price == 0.0:
+            price = None
+
     except ValueError:
+        price = None
+
+    if price is None:
+        print(f"{name} not found in {shop}")
         return None, None
+    print(f"Found {name} in {shop}")
+    return price, game_url
