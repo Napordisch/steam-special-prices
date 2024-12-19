@@ -47,7 +47,6 @@ def get_top_games_on_steam_with_special_prices() -> list[Game]:
             game_name = game_as_soup.find_all(class_='_2ekpT6PjwtcFaT4jLQehUK StoreSaleWidgetTitle')[0].text
             game_price = float(game_as_soup.find_all(class_='_3j4dI1yA7cRfCvK8h406OB')[0].text.split()[0].replace(",", "."))
             image_link = game_as_soup.find(class_='_2eQ4mkpf4IzUp1e9NnM2Wr')['src']
-            print(image_link)
             games_with_prices.append(Game(game_name, game_price, image_link))
 
         return games_with_prices
