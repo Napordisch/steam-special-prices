@@ -27,4 +27,3 @@ while True:
         place_in_top += 1
 
     print("parsing finished, waiting for the next attempt...")
-    time.sleep(60)

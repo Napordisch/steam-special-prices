@@ -7,7 +7,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
-amount_of_pages = 10
+amount_of_pages = 100
 
 service = Service(executable_path='/usr/local/bin/geckodriver')
 options = webdriver.FirefoxOptions()
