@@ -1,14 +1,9 @@
 FROM python:3
 
-WORKDIR /parser-app
-
-COPY . /parser-app
-RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update
 RUN apt-get install -y firefox-esr wget
 RUN apt-get clean
-
 
 # Download the latest stable geckodriver dynamically
 RUN ARCH=$(uname -m) && \
@@ -24,5 +19,9 @@ RUN ARCH=$(uname -m) && \
 
 RUN geckodriver --version
 
+WORKDIR /parser-app
+
+COPY . /parser-app
+RUN pip install --no-cache-dir -r requirements.txt
 
 CMD [ "python", "./main.py" ]

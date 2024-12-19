@@ -26,4 +26,5 @@ while True:
               sep="\t")
         place_in_top += 1
 
-    time.sleep(60 * 60)
+    print("parsing finished, waiting for the next attempt...")
+    time.sleep(60)

@@ -19,7 +19,6 @@ options.add_argument('--disable-dev-shm-usage')
 driver = webdriver.Firefox(options=options, service=service)
 
 
-# driver = webdriver.Firefox()
 def get_top_games_on_steam_with_special_prices() -> list[Game]:
     url = 'https://store.steampowered.com/specials/?flavor=contenthub_topsellers'
     driver.get(url)
