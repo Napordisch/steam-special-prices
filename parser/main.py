@@ -2,8 +2,14 @@ import db
 import time
 from scrapers import steam_parser
 from scrapers.other_shops_parser import find_game_price_and_link
+import os
 
-data_base = db.DataBase('db', 'user', 'user_password', 'game_info')
+DB_NAME = os.environ.get("DB_NAME")
+DB_LOGIN = os.environ.get("DB_LOGIN")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_HOST = os.environ.get("DB_HOST")
+print(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME)
+data_base = db.DataBase(DB_HOST, DB_LOGIN, DB_PASSWORD, DB_NAME)
 while True:
     games_with_prices = steam_parser.get_top_games_on_steam_with_special_prices()
     place_in_top = 1

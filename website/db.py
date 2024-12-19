@@ -1,10 +1,12 @@
 import mysql.connector
+import os
+import time
 
 db_config = {
-    'host': 'db',
-    'user': 'user',
-    'password': 'user_password',
-    'database': 'game_info'
+    'host': os.environ.get("DB_HOST"),
+    'user': os.environ.get("DB_LOGIN"),
+    'password': os.environ.get("DB_PASSWORD"),
+    'database': os.environ.get("DB_NAME")
 }
 
 
@@ -25,6 +27,7 @@ def query_db(query: str):
         except mysql.connector.Error as e:
             print(({"error": str(e)}))
             time.sleep(5)
+
             continue
 
         finally:

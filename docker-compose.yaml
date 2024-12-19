@@ -6,10 +6,12 @@ services:
     container_name: parser-container
     environment:
       - PYTHONUNBUFFERED=1
+      - DB_NAME=game_info
+      - DB_LOGIN=user
+      - DB_PASSWORD=user_password
+      - DB_HOST=db
     depends_on:
       - db
-    # volumes:
-    #   - ./parser:/parser-app
 
   db:
     container_name: my-sql-db-container
@@ -31,13 +33,15 @@ services:
     container_name: website-container
     environment:
       - PYTHONUNBUFFERED=1
+      - DB_NAME=game_info
+      - DB_LOGIN=user
+      - DB_PASSWORD=user_password
+      - DB_HOST=db
     depends_on:
       - db
       - parser
     ports:
       - "5001:5000"
-    # volumes:
-    #   - ./website:/website-app
 
 volumes:
   db:
