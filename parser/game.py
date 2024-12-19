@@ -1,5 +1,5 @@
 class Game:
-    def __init__(self, name:str, steam_price, image_link:str):
+    def __init__(self, name: str, steam_price, image_link: str):
         self.name = name
         self.steam_price = steam_price
         self.zaka_zaka_price = None

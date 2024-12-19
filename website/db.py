@@ -1,4 +1,3 @@
-from flask import Flask, jsonify
 import mysql.connector
 
 db_config = {
@@ -8,7 +7,8 @@ db_config = {
     'database': 'game_info'
 }
 
-def query_db(query:str):
+
+def query_db(query: str):
     connection_attempts = 0
     while connection_attempts < 10:
         connection_attempts += 1

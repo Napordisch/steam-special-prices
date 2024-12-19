@@ -1,9 +1,12 @@
+import time
+from datetime import datetime, timezone
+
 import mysql.connector
 from mysql.connector import Error
-import time
+
 import utilities
 from game import Game
-from datetime import datetime, timezone
+
 
 class DataBase:
     def create_tables(self):
@@ -49,7 +52,7 @@ class DataBase:
         '''
         self.push(links_table_creation)
 
-    def __init__(self, host, user:str, password, database_name, port=3306):
+    def __init__(self, host, user: str, password, database_name, port=3306):
         self.host = host
         self.user = user
         self.password = password
@@ -81,9 +84,7 @@ class DataBase:
                 time.sleep(5)
                 continue
 
-
-
-    def update_game_prices(self, game:Game, place_in_top):
+    def update_game_prices(self, game: Game, place_in_top):
         update_time = datetime.now(timezone.utc)
         fields_available = 'id, steam_price, place_in_top, update_time'
         fields = f'"{utilities.to_kebab_case(game.name)}", {game.steam_price}, {place_in_top}, "{update_time}"'
@@ -100,7 +101,6 @@ class DataBase:
             fields_available += ', gabe_store_price'
             fields += f', {game.gabe_store_price}'
 
-
         update_game_query = f'''
         INSERT INTO game_prices ({fields_available})
         VALUES ({fields})
@@ -114,7 +114,7 @@ class DataBase:
         '''
         self.push(update_game_query)
 
-    def add_game_image(self, game:Game):
+    def add_game_image(self, game: Game):
         add_image_query = f'''
         INSERT INTO game_images (id, image_link)
         VALUES ("{utilities.to_kebab_case(game.name)}", "{game.image_link}")
@@ -123,7 +123,7 @@ class DataBase:
         '''
         self.push(add_image_query)
 
-    def add_game_name(self, game:Game):
+    def add_game_name(self, game: Game):
         add_name_query = f'''
         INSERT INTO game_names (id, name)
         VALUES ("{utilities.to_kebab_case(game.name)}", "{game.name}")
@@ -131,7 +131,8 @@ class DataBase:
             name = VALUES(name);
         '''
         self.push(add_name_query)
-    def add_game_links(self, game:Game):
+
+    def add_game_links(self, game: Game):
         fields_available = 'id'
         fields = f'"{utilities.to_kebab_case(game.name)}"'
         if game.zaka_zaka_link is not None:
