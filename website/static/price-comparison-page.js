@@ -20,7 +20,7 @@ function fillPage(gameInfo) {
     if (gameInfo.zaka_zaka_price != null) addShopRow(gameInfo.zaka_zaka_link, "Zaka Zaka", gameInfo.zaka_zaka_price);
     if (gameInfo.steam_pay_price != null) addShopRow(gameInfo.steam_pay_link, "Steampay", gameInfo.steam_pay_price);
     if (gameInfo.gabe_store_price != null) addShopRow(gameInfo.gabe_store_link, "Gabestore", gameInfo.gabe_store_price);
-    
+
 }
 
 

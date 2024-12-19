@@ -1,4 +1,4 @@
-const only_steam_card_content =`
+const only_steam_card_content = `
         <div class="game-image">
             <img src="">
         </div>
@@ -31,11 +31,10 @@ const multiple_shops_card_content = `
         </div> `
 
 
-
 let game_names;
 
 fetch('/all-game-names').then(res => {
-    game_names=res.json().then(data => {
+    game_names = res.json().then(data => {
         game_names = data;
         console.log(game_names);
         AddCards(game_names).catch(err => console.error(err));
@@ -55,8 +54,8 @@ async function AddCard(game_name, game_card_grid) {
         let new_card;
         res.json().then(game_data => {
             if (game_data.gabe_store_link == null &&
-            game_data.zaka_zaka_link == null &&
-            game_data.steam_pay_link == null) {
+                game_data.zaka_zaka_link == null &&
+                game_data.steam_pay_link == null) {
                 new_card = document.createElement("div");
                 new_card.class = "game_card";
                 new_card.innerHTML = only_steam_card_content;
@@ -66,9 +65,15 @@ async function AddCard(game_name, game_card_grid) {
             } else {
                 let prices = [];
                 prices.push(parseFloat(game_data.steam_price));
-                if (game_data.zaka_zaka_price != null) {prices.push(parseFloat(game_data.zaka_zaka_price));}
-                if (game_data.steam_pay_price != null) {prices.push(parseFloat(game_data.steam_pay_price));}
-                if (game_data.gabe_store_price != null) {prices.push(parseFloat(game_data.gabe_store_price));}
+                if (game_data.zaka_zaka_price != null) {
+                    prices.push(parseFloat(game_data.zaka_zaka_price));
+                }
+                if (game_data.steam_pay_price != null) {
+                    prices.push(parseFloat(game_data.steam_pay_price));
+                }
+                if (game_data.gabe_store_price != null) {
+                    prices.push(parseFloat(game_data.gabe_store_price));
+                }
                 console.log(prices);
                 let lowest_price = Math.min(...prices);
                 console.log(lowest_price);
@@ -77,8 +82,8 @@ async function AddCard(game_name, game_card_grid) {
 
                 new_card = document.createElement("a");
                 let card_inside = document.createElement("div")
-                card_inside.className="game-card"
-                card_inside.innerHTML=multiple_shops_card_content;
+                card_inside.className = "game-card"
+                card_inside.innerHTML = multiple_shops_card_content;
                 new_card.appendChild(card_inside);
                 new_card.href = "/" + game_data.id;
                 new_card.getElementsByClassName("best-price-field")[0].innerHTML = lowest_price.toString();
@@ -88,7 +93,9 @@ async function AddCard(game_name, game_card_grid) {
             new_card.getElementsByClassName("game-title")[0].innerHTML = game_data.name;
             game_card_grid.appendChild(new_card);
         })
-    }).catch(err => {console.error(err)})
+    }).catch(err => {
+        console.error(err)
+    })
 }
 
 
