@@ -6,22 +6,42 @@ services:
     container_name: parser-container
     environment:
       - PYTHONUNBUFFERED=1
+      - DB_NAME=game_info
+      - DB_LOGIN=user
+      - DB_PASSWORD=user_password
+      - DB_HOST=db
     depends_on:
       - db
-    volumes:
-      - ./parser:/parser-app
 
   db:
     container_name: my-sql-db-container
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: game_prices
+      MYSQL_DATABASE: game_info
       MYSQL_USER: user
       MYSQL_PASSWORD: user_password
     ports:
       - "3306:3306"
     volumes:
       - ./db:/var/lib/mysql
+
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    container_name: website-container
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DB_NAME=game_info
+      - DB_LOGIN=user
+      - DB_PASSWORD=user_password
+      - DB_HOST=db
+    depends_on:
+      - db
+      - parser
+    ports:
+      - "5001:5000"
+
 volumes:
   db:
