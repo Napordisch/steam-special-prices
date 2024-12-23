@@ -25,15 +25,15 @@ def get_top_games_on_steam_with_special_prices() -> list[Game]:
 
     games_with_prices = list()
     try:
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 500).until(
             expected_conditions.presence_of_element_located(
                 (By.XPATH, "//button[text()='Show more']")))
         for i in range(amount_of_pages):
             try:
-                WebDriverWait(driver, 10).until(
+                WebDriverWait(driver, 500).until(
                     expected_conditions.presence_of_element_located(
                         (By.XPATH, "//button[text()='Show more']")))
-                WebDriverWait(driver, 10).until(
+                WebDriverWait(driver, 500).until(
                     expected_conditions.element_to_be_clickable(
                         (By.XPATH, "//button[text()='Show more']")))
                 driver.find_element(By.XPATH,
