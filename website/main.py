@@ -5,6 +5,8 @@ from db import query_db
 
 app = Flask(__name__, static_folder='static')
 
+VUE_FRONTEND_ORIGIN="http://localhost:5173"
+
 
 @app.route('/static/<path:filename>')
 def send_static(filename):
@@ -21,7 +23,7 @@ def show_all_games_page():
     return send_from_directory('static', "main_page.html")
 
 @app.route('/all-games-prices')
-@cross_origin(origin="http://localhost:3000")
+@cross_origin(origin=VUE_FRONTEND_ORIGIN)
 def get_games_prices():
     games_with_prices_and_images = query_db("""
        SELECT
@@ -41,7 +43,7 @@ def get_games_prices():
     return jsonify(games_with_prices_and_images)
 
 @app.route('/game-info/<game_id>')
-@cross_origin(origin="http://localhost:3000")
+@cross_origin(origin=VUE_FRONTEND_ORIGIN)
 def get_game_with_prices(game_id):
     sql = """
         SELECT
