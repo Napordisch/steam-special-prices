@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import cross_origin
 
 from db import query_db
 
@@ -20,6 +21,7 @@ def show_all_games_page():
     return send_from_directory('static', "main_page.html")
 
 @app.route('/all-games-prices')
+@cross_origin(origin="http://localhost:3000")
 def get_games_prices():
     games_with_prices_and_images = query_db("""
        SELECT
@@ -39,6 +41,7 @@ def get_games_prices():
     return jsonify(games_with_prices_and_images)
 
 @app.route('/game-info/<game_id>')
+@cross_origin(origin="http://localhost:3000")
 def get_game_with_prices(game_id):
     sql = """
         SELECT
