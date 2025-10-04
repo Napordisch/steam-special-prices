@@ -9,12 +9,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 amount_of_pages = 100
 
-service = Service(executable_path='/usr/local/bin/geckodriver')
+service = Service()
 options = webdriver.FirefoxOptions()
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
+# options.add_argument('--headless')
+# options.add_argument('--disable-gpu')
+# options.add_argument('--no-sandbox')
+# options.add_argument('--disable-dev-shm-usage')
 
 
 
@@ -22,22 +22,24 @@ def get_top_games_on_steam_with_special_prices() -> list[Game]:
     driver = webdriver.Firefox(options=options, service=service)
     url = 'https://store.steampowered.com/specials/?flavor=contenthub_topsellers'
     driver.get(url)
-
+    show_more_button_class_name = "_2tkiJ4VfEdI9kq1agjZyNz"
     games_with_prices = list()
     try:
         WebDriverWait(driver, 500).until(
             expected_conditions.presence_of_element_located(
-                (By.XPATH, "//button[text()='Show more']")))
+                (By.CLASS_NAME, show_more_button_class_name)))
         for i in range(amount_of_pages):
             try:
                 WebDriverWait(driver, 500).until(
                     expected_conditions.presence_of_element_located(
-                        (By.XPATH, "//button[text()='Show more']")))
+                        (By.CLASS_NAME, show_more_button_class_name)))
+
                 WebDriverWait(driver, 500).until(
                     expected_conditions.element_to_be_clickable(
-                        (By.XPATH, "//button[text()='Show more']")))
-                driver.find_element(By.XPATH,
-                                    "//button[text()='Show more']").click()
+                        (By.CLASS_NAME, show_more_button_class_name)))
+
+                driver.find_element(By.CLASS_NAME, show_more_button_class_name).click()
+                                    
                 print("clicking 'Show more' button to get more games")
             except TimeoutException:
                 break
