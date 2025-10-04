@@ -29,8 +29,11 @@ def get_games_prices():
             f"SELECT image_link FROM game_images WHERE id = \"{game['id']}\"")[0]
         shop_links = query_db(
             f"SELECT zaka_zaka_link, steam_pay_link, gabe_store_link FROM game_links WHERE id = \"{game['id']}\"")[ 0]
+        game_title = \
+        query_db(f"SELECT name FROM game_names WHERE id = \"{game['id']}\"")[0]
         game.update(image_link_dict)
         game.update(shop_links)
+        game.update(game_title)
     return jsonify(games_with_prices_and_images)
 
 
@@ -40,6 +43,18 @@ def get_all_game_names():
         lambda game_id_tuple: game_id_tuple["id"],
         query_db("SELECT id FROM game_prices ORDER by place_in_top ASC")
     ))))
+
+def game_additional_data(game_id):
+    image_link_dict = \
+    query_db(f"SELECT image_link FROM game_images WHERE id = \"{game_id}\"")[0]
+    shop_links = query_db(
+        f"SELECT zaka_zaka_link, steam_pay_link, gabe_store_link FROM game_links WHERE id = \"{game_id}\"")[
+        0]
+    game_title = \
+    query_db(f"SELECT name FROM game_names WHERE id = \"{game_id}\"")[0]
+    game.update(game_title)
+    game.update(image_link_dict)
+    game.update(shop_links)
 
 
 @app.route('/game-info/<game_id>')
