@@ -1,33 +1,33 @@
-const only_steam_card_content = `
+const only_steam_card_content = (params) => `
         <div class="game-image">
-            <img src="">
+            <img src="${params.image_link}">
         </div>
         <div class="game-info">
             <div>
-                <h2 class="game-title"></h2>
+                <h2 class="game-title">${params.game_title}</h2>
                 <div class="best-price">
-                    <h2 class="price-value"><span class = "price-field"></span> ₽</h2>
+                    <h2 class="price-value"><span class = "price-field">${params.price}</span> ₽</h2>
                     <p class="price-label">Только в стиме</p>
                 </div>
-                <p>Цена с комиссией: <span class="price-with-fee-field"></span> ₽</p>
+                <p>Цена с комиссией: <span class="price-with-fee-field">${params.price_with_fee}</span> ₽</p>
             </div>
         </div>`;
 
-const multiple_shops_card_content = `
+const multiple_shops_card_content = (params) => `
         <div class="game-image">
-            <img src="">
+            <img src="${params.image_link}">
         </div>
         <div class="game-info">
             <div>
-                <h2 class="game-title"></h2>
+                <h2 class="game-title">${params.game_title}</h2>
                 <div class="best-price">
-                    <h2 class="best-price-value"><span class = "best-price-field"></span> ₽</h2>
+                    <h2 class="best-price-value"><span class = "best-price-field">${params.lowest_price}</span> ₽</h2>
                     <p class="price-label">Лучшая цена</p>
 
                 </div>
             </div>
 
-            <p class="shop-count">Все варианты: <span class = "shop-count-number"></span></p>
+            <p class="shop-count">Все варианты: <span class = "shop-count-number">${params.amount_of_options}</span></p>
         </div> `;
 
 let game_names;
@@ -40,13 +40,6 @@ fetch("/all-games-prices").then((res) => {
   });
 });
 
-// async function AddCards(game_names) {
-//     let game_grid = document.getElementById("game-grid");
-//     for (let game_name of game_names) {
-//         console.log(game_name);
-//         await AddCard(game_name, game_grid);
-//     }
-// }
 async function AddCards(all_games_prices) {
   let game_grid = document.getElementById("game-grid");
   for (let game_data of all_games_prices) {
@@ -65,12 +58,13 @@ async function AddCard(game_data, game_card_grid) {
   ) {
     new_card = document.createElement("div");
     new_card.class = "game_card";
-    new_card.innerHTML = only_steam_card_content;
-    new_card.getElementsByClassName("price-field")[0].innerHTML =
-      game_data.steam_price;
-    console.log(game_data);
-    new_card.getElementsByClassName("price-with-fee-field")[0].innerHTML =
-      CalculatePriceWithFee(game_data.steam_price);
+    new_card.innerHTML = only_steam_card_content({
+        price: game_data.steam_price,
+        price_with_fee: CalculatePriceWithFee(game_data.steam_price),
+        image_link:game_data.image_link,
+        game_title:game_data.name
+    });
+
   } else {
     let prices = [];
     prices.push(parseFloat(game_data.steam_price));
@@ -92,20 +86,15 @@ async function AddCard(game_data, game_card_grid) {
     new_card = document.createElement("a");
     let card_inside = document.createElement("div");
     card_inside.className = "game-card";
-    card_inside.innerHTML = multiple_shops_card_content;
+    card_inside.innerHTML = multiple_shops_card_content({
+        lowest_price:lowest_price.toString(),
+        amount_of_options:amount_of_options,
+        image_link:game_data.image_link,
+        game_title:game_data.name,
+    });
     new_card.appendChild(card_inside);
     new_card.href = "/" + game_data.id;
-    new_card.getElementsByClassName("best-price-field")[0].innerHTML =
-      lowest_price.toString();
-    new_card.getElementsByClassName("shop-count-number")[0].innerHTML =
-      amount_of_options;
   }
-  new_card.querySelector("img").src = game_data.image_link;
-  new_card.getElementsByClassName("game-title")[0].innerHTML = game_data.name;
-  game_card_grid.appendChild(new_card);
-}
 
-function CalculatePriceWithFee(price) {
-  let price_value = parseFloat(price);
-  return (price_value + price_value * 0.14).toFixed(2);
+  game_card_grid.appendChild(new_card);
 }
