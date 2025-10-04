@@ -1,3 +1,6 @@
 .idea
 .virtual-env
 db
+.venv
+node_modules
+__pycache__
