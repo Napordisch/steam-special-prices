@@ -23,6 +23,6 @@ WORKDIR /parser-app
 COPY requirements.txt /parser-app
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /parser-app
+# COPY . /parser-app
 
 CMD [ "python", "./main.py" ]

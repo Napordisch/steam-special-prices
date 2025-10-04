@@ -17,48 +17,48 @@ options = webdriver.FirefoxOptions()
 # options.add_argument('--disable-dev-shm-usage')
 
 
+def game_with_price_from_game_element(game_element): 
+    game_as_soup = BeautifulSoup(str(game_element), 'html.parser')
+    game_name = game_as_soup.find_all(
+        class_='_2ekpT6PjwtcFaT4jLQehUK StoreSaleWidgetTitle')[0].text
+    game_price = float(
+        game_as_soup.find_all(class_='_3j4dI1yA7cRfCvK8h406OB')[
+            0].text.split()[0].replace(",", "."))
+    image_link = game_as_soup.find(class_='_2eQ4mkpf4IzUp1e9NnM2Wr')[
+        'src']
+    return Game(game_name, game_price, image_link)
+
+def games_with_prices_from_page_source(page_source, sublist_start_index):
+    games_with_prices = list()
+    page_as_soup = BeautifulSoup(page_source, 'html.parser')
+
+    games_in_list = page_as_soup.find_all(class_="gASJ2lL_xmVNuZkWGvrWg")
+    for game in games_in_list:
+        games_with_prices.append(game_with_price_from_game_element(game))
+
+    return games_with_prices
 
 def get_top_games_on_steam_with_special_prices() -> list[Game]:
     driver = webdriver.Firefox(options=options, service=service)
     url = 'https://store.steampowered.com/specials/?flavor=contenthub_topsellers'
     driver.get(url)
     show_more_button_class_name = "_2tkiJ4VfEdI9kq1agjZyNz"
-    games_with_prices = list()
+    games_with_prices_list_length = 0
     try:
-        WebDriverWait(driver, 500).until(
-            expected_conditions.presence_of_element_located(
-                (By.CLASS_NAME, show_more_button_class_name)))
+        WebDriverWait(driver, 500).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, show_more_button_class_name)))
         for i in range(amount_of_pages):
+            sublist = games_with_prices_from_page_source(driver.page_source, games_with_prices_list_length)
+            games_with_prices_list_length += len(sublist)
+            yield sublist
             try:
-                WebDriverWait(driver, 500).until(
-                    expected_conditions.presence_of_element_located(
-                        (By.CLASS_NAME, show_more_button_class_name)))
-
-                WebDriverWait(driver, 500).until(
-                    expected_conditions.element_to_be_clickable(
-                        (By.CLASS_NAME, show_more_button_class_name)))
-
+                WebDriverWait(driver, 500).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, show_more_button_class_name)))
+                WebDriverWait(driver, 500).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, show_more_button_class_name)))
                 driver.find_element(By.CLASS_NAME, show_more_button_class_name).click()
-                                    
                 print("clicking 'Show more' button to get more games")
             except TimeoutException:
                 break
+            
 
-        page_as_soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        games_in_list = page_as_soup.find_all(class_="gASJ2lL_xmVNuZkWGvrWg")
-        for game in games_in_list:
-            game_as_soup = BeautifulSoup(str(game), 'html.parser')
-            game_name = game_as_soup.find_all(
-                class_='_2ekpT6PjwtcFaT4jLQehUK StoreSaleWidgetTitle')[0].text
-            game_price = float(
-                game_as_soup.find_all(class_='_3j4dI1yA7cRfCvK8h406OB')[
-                    0].text.split()[0].replace(",", "."))
-            image_link = game_as_soup.find(class_='_2eQ4mkpf4IzUp1e9NnM2Wr')[
-                'src']
-            games_with_prices.append(Game(game_name, game_price, image_link))
-
-        return games_with_prices
 
 
     finally:

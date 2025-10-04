@@ -9,7 +9,7 @@ WORKDIR /website-app
 COPY requirements.txt /website-app
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /website-app
+# COPY . /website-app
 
 
 CMD [ "python", "./main.py" ]

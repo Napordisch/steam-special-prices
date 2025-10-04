@@ -1,17 +1,19 @@
 services:
-  parser:
-    build:
-      context: ./parser
-      dockerfile: Dockerfile
-    container_name: parser-container
-    environment:
-      - PYTHONUNBUFFERED=1
-      - DB_NAME=game_info
-      - DB_LOGIN=user
-      - DB_PASSWORD=user_password
-      - DB_HOST=db
-    depends_on:
-      - db
+  # parser:
+  #   build:
+  #     context: ./parser
+  #     dockerfile: Dockerfile
+  #   container_name: parser-container
+  #   volumes:
+  #     - ./parser:/parser-app
+  #   environment:
+  #     - PYTHONUNBUFFERED=1
+  #     - DB_NAME=game_info
+  #     - DB_LOGIN=user
+  #     - DB_PASSWORD=user_password
+  #     - DB_HOST=db
+  #   depends_on:
+  #     - db
 
   db:
     container_name: my-sql-db-container
@@ -26,22 +28,24 @@ services:
     volumes:
       - ./db:/var/lib/mysql
 
-  website:
-    build:
-      context: ./website
-      dockerfile: Dockerfile
-    container_name: website-container
-    environment:
-      - PYTHONUNBUFFERED=1
-      - DB_NAME=game_info
-      - DB_LOGIN=user
-      - DB_PASSWORD=user_password
-      - DB_HOST=db
-    depends_on:
-      - db
-      - parser
-    ports:
-      - "5001:5000"
+  # website:
+  #   build:
+  #     context: ./website
+  #     dockerfile: Dockerfile
+  #   container_name: website-container
+  #   environment:
+  #     - PYTHONUNBUFFERED=1
+  #     - DB_NAME=game_info
+  #     - DB_LOGIN=user
+  #     - DB_PASSWORD=user_password
+  #     - DB_HOST=db
+  #   depends_on:
+  #     - db
+  #     - parser
+  #   volumes:
+  #   - ./website:/website-app
+  #   ports:
+      # - "5001:5000"
 
 volumes:
   db:

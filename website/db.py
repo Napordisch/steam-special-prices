@@ -2,11 +2,17 @@ import mysql.connector
 import os
 import time
 
+# db_config = {
+#     'host': os.environ.get("DB_HOST"),
+#     'user': os.environ.get("DB_LOGIN"),
+#     'password': os.environ.get("DB_PASSWORD"),
+#     'database': os.environ.get("DB_NAME")
+# }
 db_config = {
-    'host': os.environ.get("DB_HOST"),
-    'user': os.environ.get("DB_LOGIN"),
-    'password': os.environ.get("DB_PASSWORD"),
-    'database': os.environ.get("DB_NAME")
+    'host': "localhost",
+    'user': "user",
+    'password': "user_password",
+    'database': "game_info"
 }
 
 
