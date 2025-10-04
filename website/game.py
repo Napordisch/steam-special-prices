@@ -1,6 +1,5 @@
 class Game:
     def __init__(self, data_as_dict):
-        print(data_as_dict)
         self.id = data_as_dict['id']
         self.name = data_as_dict['name']
         self.steam_price = data_as_dict['steam_price']

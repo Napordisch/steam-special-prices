@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: rgb(23, 29, 37);
+            color: #fff;
+            text-align: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            min-width: 600px;
+            margin-top: 5rem;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding-right: 2.5em;
+            padding-top: 0.2em;
+            padding-bottom: 0.2em;
+            border: none;
+        }
+
+        a {
+            cursor: pointer;
+            color: #fff;
+            text-decoration-thickness: .5px;
+
+            text-underline-offset: 0.4em;
+            text-decoration-color: rgba(255, 255, 255, 0.284);
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <p>
+        <a href="/">Все игры</a>
+    </p>
+    <img src="{{game.image_link}}">
+    <h1 class="game-name"></h1>
+    <table class="prices-data-table">
+        <tr class="steam-row">
+            <td>Steam</td>
+            <td><span class="price-without-fee-value">{{game.steam_price}}</span> ₽</td>
+        </tr>
+        <tr class="steam-with-fee-row">
+            <td>Steam с комиссией пополнения</td>
+            <td><span class="price-with-fee-value">{{game.price_with_fee()}}</span> ₽</td>
+        </tr>
+        {% if game.zaka_zaka_price != None %}
+        <tr class="other-shop-row">
+            <td><a href="{{game.zaka_zaka_link}}" class="shop-link-with-name">ZakaZaka</a></td>
+            <td><span class="price-value">{{game.zaka_zaka_price}}</span> ₽</td>
+        </tr>
+        {% endif %}
+        {% if game.steam_pay_price != None %}
+        <tr class="other-shop-row">
+            <td><a href="{{game.steam_pay_link}}" class="shop-link-with-name">Steampay</a></td>
+            <td><span class="price-value">{{game.steam_pay_price}}</span> ₽</td>
+        </tr>
+        {% endif %}
+        {% if game.gabe_store_price != None %}
+        <tr class="other-shop-row">
+            <td><a href="{{game.gabe_store_link}}" class="shop-link-with-name">GabeStore</a></td>
+            <td><span class="price-value">{{game.gabe_store_price}}</span> ₽</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+</body>
+
+</html>

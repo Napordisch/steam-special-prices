@@ -13,13 +13,12 @@ VUE_FRONTEND_ORIGIN="http://localhost:5173"
 def send_static(filename):
     return send_from_directory('static', filename)
 
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
 
-@app.route('/<game_id>')
-def show_game_comparision_page(game_id):
-    return send_from_directory('static', "price-comparison-page.html")
 
 @app.route('/')
-
 def get_games_prices():
     games_with_prices_and_images = query_db("""
        SELECT
@@ -36,10 +35,10 @@ def get_games_prices():
         ORDER BY game_prices.place_in_top ASC
     """)
 
+
     return render_template('main_page.html.jinja', game_cards=map(Game, games_with_prices_and_images))
 
-@app.route('/game-info/<game_id>')
-@cross_origin(origin=VUE_FRONTEND_ORIGIN)
+@app.route('/<game_id>')
 def get_game_with_prices(game_id):
     sql = """
         SELECT
@@ -56,10 +55,9 @@ def get_game_with_prices(game_id):
         WHERE game_prices.id = %s
     """
     rows = query_db(sql, (game_id,))
-    if not rows:
-        abort(404, "Game not found")
-    game = dict(rows[0])
-    return jsonify(game)
+    game = Game(dict(rows[0]))
+
+    return render_template('price_comparison_page.html.jinja', game=game)
 
 
 if __name__ == '__main__':
