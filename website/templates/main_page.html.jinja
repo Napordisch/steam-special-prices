@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Самые популярные игры со скидками в Стиме</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: rgb(23, 29, 37);
+            color: #fff;
+            text-align: left;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        #game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 219px);
+            gap: 20px;
+        }
+
+        .game-card {
+            border: none;
+
+        }
+
+        .game-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+            cursor:pointer;
+        }
+
+        h2 {
+            margin-top: 0.3em;
+            margin-bottom: 0.3em;
+        }
+
+        .best-price {
+            margin-top: 1em;
+        }
+
+        .best-price-value + .price-label {
+            margin-top: 0.1em;
+        }
+
+        .shop-count {
+            text-decoration: underline;
+            text-decoration-thickness: .5px;
+
+            text-underline-offset: 0.4em;
+            text-decoration-color: rgba(255, 255, 255, 0.284);
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <h1>Самые популярные игры со скидками в Стиме</h1>
+    <div id="game-grid">
+    {% for game_card in game_cards %}
+    {% if game_card.only_steam_info() %}
+    <div class="game-card">
+        <div class="game-image">
+            <img src="{{ game_card.image_link }}"/>
+        </div>
+        <div class="game-info">
+            <div>
+                <h2 class="game-title">{{game_card.name}}</h2>
+               
+                <div class="best-price">
+                    <h2 class="price-value"><span class = "price-field">{{game_card.steam_price}}</span> ₽</h2>
+                    <p class="price-label">Только в стиме</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <a class="game-card" href="{{'/' + game_card.id}}">
+        <div class="game-image">
+            <img src="{{game_card.image_link}}"/>
+        </div>
+        <div class="game-info">
+            <div>
+                <h2 class="game-title">{{game_card.name}}</h2>
+                <div class="best-price">
+                    <h2 class="best-price-value"><span class = "best-price-field">{{game_card.lowest_price()}}</span> ₽</h2>
+                    <p class="price-label">Лучшая цена</p>
+
+                </div>
+            </div>
+
+            <p class="shop-count">Все варианты: <span class = "shop-count-number">{{game_card.amount_of_prices()}}</span></p>
+        </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+    </div>
+</div>
+</body>
+
+</html>

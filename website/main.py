@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, render_template
 from flask_cors import cross_origin
+from game import Game
 
 from db import query_db
 
@@ -17,13 +18,8 @@ def send_static(filename):
 def show_game_comparision_page(game_id):
     return send_from_directory('static', "price-comparison-page.html")
 
-
 @app.route('/')
-def show_all_games_page():
-    return send_from_directory('static', "main_page.html")
 
-@app.route('/all-games-prices')
-@cross_origin(origin=VUE_FRONTEND_ORIGIN)
 def get_games_prices():
     games_with_prices_and_images = query_db("""
        SELECT
@@ -40,7 +36,7 @@ def get_games_prices():
         ORDER BY game_prices.place_in_top ASC
     """)
 
-    return jsonify(games_with_prices_and_images)
+    return render_template('main_page.html.jinja', game_cards=map(Game, games_with_prices_and_images))
 
 @app.route('/game-info/<game_id>')
 @cross_origin(origin=VUE_FRONTEND_ORIGIN)
